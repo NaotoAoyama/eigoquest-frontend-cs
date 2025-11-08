@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://host.docker.internal:5123'
 
 export const useAuthStore = defineStore('auth', () => {
   // state（状態）
@@ -11,7 +11,7 @@ export const useAuthStore = defineStore('auth', () => {
   // リフレッシュトークン（JWT)
   const refreshToken = ref<string | null>(localStorage.getItem('refreshToken'))
   // ログインユーザーの情報（必要に応じて拡張）
-  const user = ref<any | null>(JSON.parse(localStorage.getItem('user') || 'null'))
+  const user = ref<unknown | null>(JSON.parse(localStorage.getItem('user') || 'null'))
   // 認証に関するエラーメッセージ
   const authError = ref<string | null>(null)
   // ローディング状態
@@ -32,7 +32,7 @@ export const useAuthStore = defineStore('auth', () => {
     isLoading.value = true
     authError.value = null
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/token/`, {
+      const response = await axios.post(`${API_BASE_URL}/api/accounts/login`, {
         username: username,
         password: password,
       })
@@ -49,7 +49,7 @@ export const useAuthStore = defineStore('auth', () => {
       localStorage.setItem('user', JSON.stringify(user.value))
 
       return true // ログイン成功
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Login failed:', err)
       if (axios.isAxiosError(err) && err.response?.status === 401) {
         authError.value = 'ユーザー名またはパスワードが正しくありません。'
