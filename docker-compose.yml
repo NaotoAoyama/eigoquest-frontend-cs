@@ -22,6 +22,10 @@ services:
     env_file:
       - ./.env.development
 
+    environment:
+      # ホスト(Mac)のSSHエージェントの場所をコンテナ内部に教える
+      - SSH_AUTH_SOCK=${SSH_AUTH_SOCK}
+
     # コンテナの標準入力を開いたままにする (Viteサーバーの安定動作のため)
     stdin_open: true
     tty: true

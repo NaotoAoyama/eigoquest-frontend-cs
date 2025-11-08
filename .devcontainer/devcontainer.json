@@ -23,5 +23,11 @@
 
   // 5. コンテナ内のユーザーを 'node' に指定
   // (node:20-slim イメージが提供するデフォルトの非rootユーザー)
-  "remoteUser": "root"
+  "remoteUser": "root",
+
+  // ▼▼▼ 以下の "mounts" ブロックを追記 ▼▼▼
+  "mounts": [
+    // SSHエージェントのソケットをコンテナに転送する
+    "source=${localEnv:SSH_AUTH_SOCK},target=${localEnv:SSH_AUTH_SOCK},type=bind,consistency=cached"
+  ]
 }
