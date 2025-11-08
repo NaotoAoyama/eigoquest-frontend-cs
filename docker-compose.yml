@@ -5,8 +5,8 @@ services:
   frontend:
     # 今いるディレクトリにある Dockerfile を使ってビルドする
     build: .
-    # 起動コマンド (Dockerfile の CMD をそのまま使うので、ここでは省略可)
-    # command: npm run dev -- --host
+    # DockerfileのCMDを上書きし、Viteを自動起動させず待機状態にする
+    command: sleep infinity
 
     # ボリューム (ローカルのコード変更をコンテナに即時反映させる)
     # node_modules はローカルと共有しない (パフォーマンスのため)
