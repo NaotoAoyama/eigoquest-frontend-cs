@@ -1,6 +1,9 @@
 # 1. ベースイメージの指定 (Node.js v20 の軽量版)
 FROM node:20-slim
 
+# コンテナのOSを更新し、gitをインストールする
+RUN apt-get update && apt-get install -y git
+
 # 2. ワーキングディレクトリの設定
 WORKDIR /app
 
