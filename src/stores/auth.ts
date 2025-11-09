@@ -36,9 +36,9 @@ export const useAuthStore = defineStore('auth', () => {
         username: username,
         password: password,
       })
-      // レスポンスからトークンを取得
-      accessToken.value = response.data.access
-      refreshToken.value = response.data.refresh
+　　　　// レスポンスからトークンを取得 (C# APIのAuthResponseDto に合わせる)
+      accessToken.value = response.data.accessToken
+      refreshToken.value = response.data.refreshToken
       // トークンをLocalStorageに保存（ブラウザを閉じても維持するため）
       localStorage.setItem('accessToken', accessToken.value!)
       localStorage.setItem('refreshToken', refreshToken.value!)

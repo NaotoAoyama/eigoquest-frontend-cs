@@ -26,7 +26,6 @@ services:
       # ホスト(Mac)のSSHエージェントの場所をコンテナ内部に教える
       - SSH_AUTH_SOCK=${SSH_AUTH_SOCK}
 
-    # これでコンテナが host.docker.internal を見つけられるようになります
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
