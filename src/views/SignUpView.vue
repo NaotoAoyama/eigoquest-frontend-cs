@@ -36,21 +36,28 @@ const handleSignUp = async () => {
 
     // 登録成功したらログインページへ自動遷移
     router.push('/login')
-  } catch (err) {
+} catch (err: unknown) { // (型を any から unknown に修正)
     console.error('Sign up failed:', err)
+
     if (axios.isAxiosError(err) && err.response) {
-      // Django (DRF) からのバリデーションエラーを処理
       const errors = err.response.data
-      if (errors.username) {
-        errorMessage.value = errors.username[0] // 例: "このユーザー名は既に使用されています。"
-      } else if (errors.password) {
-        errorMessage.value = `パスワードエラー: ${errors.password[0]}`
-      } else if (errors.password_confirm) {
-        errorMessage.value = errors.password_confirm[0] // 例: "パスワードが一致しません。"
+
+      // C# APIが返す "password_confirm" エラーを処理
+      if (errors.password_confirm) {
+        errorMessage.value = errors.password_confirm // (C# APIは文字列を返す)
+      
+      // C# APIが返す "username" エラー (配列) を処理
+      // (パスワード強度不足のエラーなども "username" キーに含まれる)
+      } else if (errors.username && Array.isArray(errors.username)) {
+        // エラーが複数ある場合、すべて連結して表示
+        errorMessage.value = errors.username.join(' ')
+      
       } else {
+        // 上記以外のC# APIからのエラー
         errorMessage.value = '登録中にエラーが発生しました。 (詳細はコンソールを確認)'
       }
     } else {
+      // ネットワークエラーなど
       errorMessage.value = '登録中に予期せぬエラーが発生しました。'
     }
   } finally {
