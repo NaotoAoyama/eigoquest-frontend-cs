@@ -4,8 +4,29 @@ import { useRoute } from 'vue-router' // URLパラメータ取得用
 import axios from 'axios'
 import { useAuthStore } from '@/stores/auth'
 
+// C# API (QuestionResultDto) に対応する型
+interface QuestionResult {
+  id: number
+  question_text: string
+  option_a: string
+  option_b: string
+  option_c: string
+  option_d: string
+  correct_answer: string
+  explanation: string | null
+}
+
+// C# API (ResultResponseDto) に対応する型
+interface Result {
+  id: number
+  question: QuestionResult
+  selected_answer: string
+  is_correct: boolean
+  answered_at: string // (DateTimeはJSONではstringになる)
+}
+
 // APIから取得した結果リスト
-const results = ref<any[]>([]) // 型は後でちゃんと定義 (ResultSerializer に合わせる)
+const results = ref<Result[]>([]) // ← any[] から Result[] に修正
 const loading = ref(true)
 const error = ref<string | null>(null)
 const route = useRoute() // 現在のルート情報
@@ -34,7 +55,7 @@ onMounted(async () => {
       headers: authStore.authHeader, // 認証ヘッダー
     })
     results.value = response.data
-  } catch (err: any) {
+  } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       if (err.response?.status === 401) {
         error.value = '結果を表示するにはログインが必要です。'

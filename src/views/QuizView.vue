@@ -4,8 +4,17 @@ import axios from 'axios' // axiosをインポート
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
+interface QuestionQuiz {
+  id: number
+  question_text: string
+  option_a: string
+  option_b: string
+  option_c: string
+  option_d: string
+}
+
 // APIから取得した問題リストを保持するリアクティブ変数
-const questions = ref<any[]>([]) // 型は後でちゃんと定義するのが望ましい
+const questions = ref<QuestionQuiz[]>([]) // ← any[] から QuestionQuiz[] に修正
 const loading = ref(true) // ローディング状態
 const error = ref<string | null>(null) // エラーメッセージ
 
@@ -33,7 +42,7 @@ onMounted(async () => {
     // 変更前: questions.value.forEach(q => selectedAnswers.value[q.id] = '');
     // 変更後: reactive は .value が不要
     questions.value.forEach((q) => (selectedAnswers[q.id] = ''))
-  } catch (err: any) {
+  } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // --- 変更点: 403ではなく401 (Unauthorized) をチェック ---
       if (err.response?.status === 401) {
