@@ -11,7 +11,7 @@ const isLoading = ref(false)
 const router = useRouter()
 
 // APIのベースURL
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5033'
 // Django APIのエンドポイントを定義
 const signupApiUrl = `${API_BASE_URL}/api/accounts/register`
 

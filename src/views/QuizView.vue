@@ -9,7 +9,7 @@ const questions = ref<any[]>([]) // 型は後でちゃんと定義するのが�
 const loading = ref(true) // ローディング状態
 const error = ref<string | null>(null) // エラーメッセージ
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5033'
 const apiUrl = `${API_BASE_URL}/api/quiz/`
 const submitApiUrl = `${API_BASE_URL}/api/quiz/submit/`
 
